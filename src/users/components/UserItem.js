@@ -2,11 +2,11 @@
  * We use Link from react router dom because the normal achor tags makes the page reload
  * and we don't want that.
  */
-import Avatar from "../../shared/UIElements/Avatar";
+import Avatar from "../../shared/components/UIElements/Avatar";
 import { Link } from "react-router-dom";
 
 import "./UserItem.css";
-import Card from "../../shared/UIElements/Card";
+import Card from "../../shared/components/UIElements/Card";
 
 const UserItem = ({ user }) => {
   const { id, name, image, places: placeCount } = user;
