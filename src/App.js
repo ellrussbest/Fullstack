@@ -4,6 +4,7 @@ import Users from "./users/pages/Users";
 import "./App.css";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import NewPlace from "./places/pages/NewPlace";
 
 const Nav = ({ children }) => {
   return (
@@ -33,6 +34,14 @@ const router = createBrowserRouter([
     element: (
       <Nav>
         <UserPlaces />
+      </Nav>
+    ),
+  },
+  {
+    path: "places/new",
+    element: (
+      <Nav>
+        <NewPlace />
       </Nav>
     ),
   },

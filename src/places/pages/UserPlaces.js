@@ -36,7 +36,7 @@ const UserPlaces = () => {
 
   const loadedPlaces = DUMMY_PLACES.filter((place) => place.creator === userId);
 
-  return <PlaceList items={loadedPlaces} />;
+  return <PlaceList obj={{ items: loadedPlaces }} />;
 };
 
 export default UserPlaces;

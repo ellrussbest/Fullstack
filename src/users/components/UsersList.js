@@ -2,7 +2,8 @@ import Card from "../../shared/components/UIElements/Card";
 import UserItem from "./UserItem";
 import "./UsersList.css";
 
-const UsersList = ({ items }) => {
+const UsersList = ({ obj }) => {
+  const { items } = obj;
   return items.length === 0 ? (
     <div className="center">
       {" "}
@@ -13,7 +14,7 @@ const UsersList = ({ items }) => {
   ) : (
     <ul className="users-list">
       {items.map((user) => (
-        <UserItem key={user.id} user={user} />
+        <UserItem key={user.id} obj={{ user: user }} />
       ))}
     </ul>
   );

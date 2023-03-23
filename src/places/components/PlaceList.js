@@ -3,8 +3,8 @@ import PlaceItem from "./PlaceItem";
 
 import "./PlaceList.css";
 
-
-const PlaceList = ({ items }) => {
+const PlaceList = ({ obj }) => {
+  const { items } = obj;
   if (items.length === 0) {
     return (
       <div className="place-list center">

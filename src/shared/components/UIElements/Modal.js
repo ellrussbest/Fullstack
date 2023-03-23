@@ -4,7 +4,6 @@ import { CSSTransition } from "react-transition-group";
 import "./Modal.css";
 
 const ModalOverlay = ({ obj, children }) => {
-
   const {
     className,
     style,
@@ -36,7 +35,7 @@ const Modal = ({ obj, children }) => {
 
   return (
     <>
-      {show && <Backdrop onClick={onCancel} />}
+      {show && <Backdrop obj={{ onclick: onCancel }} />}
       <CSSTransition
         in={show}
         mountOnEnter

@@ -2,6 +2,8 @@ import { useState } from "react";
 import Button from "../../shared/components/FormElements/Button";
 import Card from "../../shared/components/UIElements/Card";
 import Modal from "../../shared/components/UIElements/Modal";
+import Map from "../../shared/components/UIElements/Map";
+
 import "./PlaceItem.css";
 
 const PlaceItem = ({ obj }) => {
@@ -17,7 +19,7 @@ const PlaceItem = ({ obj }) => {
     description,
     address,
     // creator: creatorId,
-    // location: coordinates,
+    location: coordinates,
   } = obj;
 
   const style = {
@@ -36,7 +38,12 @@ const PlaceItem = ({ obj }) => {
         }}
       >
         <div className="map-container">
-          <h2>THE MAP!</h2>
+          <Map
+            obj={{
+              center: coordinates,
+              zoom: 16,
+            }}
+          />
         </div>
       </Modal>
       <li className="place-item">
