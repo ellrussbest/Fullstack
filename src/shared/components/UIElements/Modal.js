@@ -13,7 +13,7 @@ const ModalOverlay = ({ obj, children }) => {
     contentClass,
     footerClass,
     footer,
-  } = obj;
+  } = obj || {};
 
   const content = (
     <div className={`modal ${className}`} style={style}>
@@ -31,7 +31,7 @@ const ModalOverlay = ({ obj, children }) => {
 };
 
 const Modal = ({ obj, children }) => {
-  const { onCancel, show } = obj;
+  const { onCancel, show } = obj || {};
 
   return (
     <>

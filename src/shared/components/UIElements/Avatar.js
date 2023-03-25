@@ -1,7 +1,7 @@
 import './Avatar.css';
 
 const Avatar = ({obj}) => {
-  const {className, style, image, alt, width } = obj;
+  const { className, style, image, alt, width } = obj || {};
   return (
     <div className={`avatar ${className}`} style={style}>
       <img

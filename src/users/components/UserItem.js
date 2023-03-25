@@ -9,8 +9,8 @@ import "./UserItem.css";
 import Card from "../../shared/components/UIElements/Card";
 
 const UserItem = ({ obj }) => {
-  const { user } = obj;
-  const { id, name, image, places: placeCount } = user;
+  const { user } = obj || {};
+  const { id, name, image, places: placeCount } = user || {};
   const style = {
     padding: 0,
   };

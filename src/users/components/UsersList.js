@@ -3,7 +3,7 @@ import UserItem from "./UserItem";
 import "./UsersList.css";
 
 const UsersList = ({ obj }) => {
-  const { items } = obj;
+  const { items } = obj || {};
   return items.length === 0 ? (
     <div className="center">
       {" "}

@@ -34,7 +34,7 @@ const Input = ({ obj }) => {
     onInput,
     value: propsValue,
     valid,
-  } = obj;
+  } = obj || {};
   const [inputState, dispatch] = useReducer(inputReducer, {
     value: propsValue || "",
     isValid: valid || false,

@@ -2,7 +2,7 @@ import { useRef, useEffect } from "react";
 import "./Map.css";
 
 const Map = ({ obj }) => {
-  const { className, style, center, zoom } = obj;
+  const { className, style, center, zoom } = obj || {};
   const mapRef = useRef();
 
   // we use useEffect here and we are sure that the re-render is going to take place
