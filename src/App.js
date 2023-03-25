@@ -5,6 +5,7 @@ import "./App.css";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import NewPlace from "./places/pages/NewPlace";
+import UpdatePlace from "./places/pages/UpdatePlace";
 
 const Nav = ({ children }) => {
   return (
@@ -42,6 +43,14 @@ const router = createBrowserRouter([
     element: (
       <Nav>
         <NewPlace />
+      </Nav>
+    ),
+  },
+  {
+    path: "places/:placeId",
+    element: (
+      <Nav>
+        <UpdatePlace />
       </Nav>
     ),
   },
