@@ -89,7 +89,7 @@ const Input = ({ obj }) => {
     >
       <label htmlFor={id}>{label}</label>
       {element}
-      {!isValid && <p>{errorText}</p>}
+      {!isValid && isTouched && <p>{errorText}</p>}
     </div>
   );
 };
