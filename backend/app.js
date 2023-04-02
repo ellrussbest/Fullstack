@@ -1,7 +1,8 @@
-require('dotenv').config()
+require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const HttpError = require("./models/http-error");
+const mongoose = require("mongoose");
 
 const placesRoutes = require("./routes/places-routes");
 const usersRoutes = require("./routes/users-routes");
@@ -34,4 +35,7 @@ app.use((error, req, res, next) => {
   res.json({ message: error.message || "An unknown error occured!" });
 });
 
-app.listen(5000);
+mongoose
+  .connect(process.env.CONNECTION_STRING)
+  .then(() => app.listen(5000))
+  .catch((error) => console.log(error));
