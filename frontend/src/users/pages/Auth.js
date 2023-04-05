@@ -8,11 +8,17 @@ import {
   VALIDATOR_EMAIL,
   VALIDATOR_MINLENGTH,
   VALIDATOR_REQUIRE,
+  url,
 } from "../../shared/util/validators";
 import "./Auth.css";
+import ErrorModal from "../../shared/components/UIElements/ErrorModal";
+import LoadingSpinner from "../../shared/components/UIElements/LoadingSpinner";
+import { useHttpClient } from "../../shared/hooks/http-hook";
 
 const Auth = () => {
-  const { login, logout } = useContext(AuthContext);
+  const { isLoading, error, sendRequest, clearError } = useHttpClient();
+  const { login } = useContext(AuthContext);
+
   const [formState, inputHandler, setFormData] = useForm({
     initialInputs: {
       email: {
@@ -48,68 +54,111 @@ const Auth = () => {
     }
     setIsLoginMode((prevMode) => !prevMode);
   };
-  const authSubmitHandler = (e) => {
+  const authSubmitHandler = async (e) => {
     e.preventDefault();
-    console.log(formState.inputs);
-    login()
+    if (isLoginMode) {
+      try {
+        const responseData = await sendRequest(
+          `${url}/users/login`,
+          "POST",
+          JSON.stringify({
+            email: formState.inputs.email.value,
+            password: formState.inputs.password.value,
+          }),
+          {
+            "Content-Type": "application/json",
+          }
+        );
+
+        login(responseData.user.id);
+      } catch (error) {}
+    } else {
+      try {
+        const responseData = await sendRequest(
+          `${url}/users/signup`,
+          "POST",
+          JSON.stringify({
+            name: formState.inputs.name.value,
+            email: formState.inputs.email.value,
+            password: formState.inputs.password.value,
+          }),
+          {
+            "Content-Type": "application/json",
+          }
+        );
+        login(responseData.user.id);
+      } catch (error) {}
+    }
   };
+
   return (
-    <Card
-      obj={{
-        className: "authentication",
-      }}
-    >
-      <h2>Login Required</h2>
-      <hr />
-      <form onSubmit={authSubmitHandler}>
-        {!isLoginMode && (
+    <>
+      <ErrorModal
+        obj={{
+          error: error,
+          onClear: clearError,
+        }}
+      />
+
+      <Card
+        obj={{
+          className: "authentication",
+        }}
+      >
+        {isLoading && <LoadingSpinner obj={{ asOverlay: true }} />}
+        <h2>Login Required</h2>
+        <hr />
+        <form onSubmit={authSubmitHandler}>
+          {!isLoginMode && (
+            <Input
+              obj={{
+                element: "input",
+                id: "name",
+                type: "text",
+                label: "Your Name",
+                validators: [VALIDATOR_REQUIRE()],
+                errorText: "Please enter a name",
+                onInput: inputHandler,
+              }}
+            />
+          )}
           <Input
             obj={{
+              id: "email",
               element: "input",
-              id: "name",
-              type: "text",
-              label: "Your Name",
-              validators: [VALIDATOR_REQUIRE()],
-              errorText: "Please enter a name",
+              type: "email",
+              label: "E-Mail",
+              validators: [VALIDATOR_EMAIL()],
+              errorText: "Please enter a valid Email",
               onInput: inputHandler,
             }}
           />
-        )}
-        <Input
-          obj={{
-            id: "email",
-            element: "input",
-            type: "email",
-            label: "E-Mail",
-            validators: [VALIDATOR_EMAIL()],
-            errorText: "Please enter a valid Email",
-            onInput: inputHandler,
-          }}
-        />
-        <Input
-          obj={{
-            id: "password",
-            element: "input",
-            type: "password",
-            label: "Password",
-            validators: [VALIDATOR_MINLENGTH(5)],
-            errorText: "Please enter a valid password, at least 5 characters.",
-            onInput: inputHandler,
-          }}
-        />
-        <Button
-          obj={{
-            type: "submit",
-            disabled: !formState.isValid,
-          }}
-        >
-          {isLoginMode ? "LOGIN" : "SIGNUP"}
+          <Input
+            obj={{
+              id: "password",
+              element: "input",
+              type: "password",
+              label: "Password",
+              validators: [VALIDATOR_MINLENGTH(5)],
+              errorText:
+                "Please enter a valid password, at least 5 characters.",
+              onInput: inputHandler,
+            }}
+          />
+          <Button
+            obj={{
+              type: "submit",
+              disabled: !formState.isValid,
+            }}
+          >
+            {isLoginMode ? "LOGIN" : "SIGNUP"}
+          </Button>
+        </form>
+        <Button obj={{ inverse: true, onClick: switchModeHandler }}>
+          SWITCH TO {isLoginMode ? "SIGNUP" : "Login"}
         </Button>
-      </form>
-      <Button obj={{ inverse: true, onClick: switchModeHandler }}>
-        SWITCH TO {isLoginMode ? "SIGNUP" : "Login"}
-      </Button>
-    </Card>
+      </Card>
+    </>
   );
 };
 

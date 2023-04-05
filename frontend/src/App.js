@@ -69,13 +69,16 @@ const Nav = ({ children }) => {
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userId, setUserId] = useState("");
 
-  const login = useCallback(() => {
+  const login = useCallback((userId) => {
     setIsLoggedIn(true);
+    setUserId(userId);
   }, []);
 
   const logout = useCallback(() => {
     setIsLoggedIn(false);
+    setUserId(null);
   }, []);
 
   let router;
@@ -156,6 +159,7 @@ function App() {
   return (
     <AuthContext.Provider
       value={{
+        userId: userId,
         isLoggedIn: isLoggedIn,
         login: login,
         logout: logout,

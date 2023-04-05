@@ -3,6 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const HttpError = require("./models/http-error");
 const mongoose = require("mongoose");
+const cors = require("cors");
 
 const placesRoutes = require("./routes/places-routes");
 const usersRoutes = require("./routes/users-routes");
@@ -10,6 +11,23 @@ const usersRoutes = require("./routes/users-routes");
 const app = express();
 
 app.use(bodyParser.json());
+
+/**
+ * A longer way of enabling cors
+ */
+
+// app.use((req, res, next) => {
+//   res.setHeader("Access-Control-Allow-Origin", "*");
+//   res.setHeader(
+//     "Access-Control-Allow-Headers",
+//     "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+//   );
+//   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE");
+//   next();
+// });
+
+// a shorter way of enabling cors
+app.use(cors());
 
 // middlewares
 app.use("/api/places", placesRoutes);
@@ -37,5 +55,8 @@ app.use((error, req, res, next) => {
 
 mongoose
   .connect(process.env.CONNECTION_STRING)
-  .then(() => app.listen(5000))
+  .then(() => {
+    console.log("The connection was successful");
+    app.listen(5000);
+  })
   .catch((error) => console.log(error));

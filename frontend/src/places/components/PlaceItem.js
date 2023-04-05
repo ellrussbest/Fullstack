@@ -29,7 +29,7 @@ const PlaceItem = ({ obj }) => {
   };
   const {
     id,
-    imageUrl: image,
+    image,
     title,
     description,
     address,
