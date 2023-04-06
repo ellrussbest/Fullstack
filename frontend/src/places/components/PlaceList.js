@@ -5,7 +5,7 @@ import PlaceItem from "./PlaceItem";
 import "./PlaceList.css";
 
 const PlaceList = ({ obj }) => {
-  const { items } = obj || {};
+  const { items, onDeletePlace } = obj || {};
   if (items.length === 0) {
     return (
       <div className="place-list center">
@@ -26,7 +26,7 @@ const PlaceList = ({ obj }) => {
   return (
     <ul className="place-list">
       {items.map((place) => (
-        <PlaceItem key={place.id} obj={place} />
+        <PlaceItem key={place.id} obj={{ ...place, onDelete: onDeletePlace }} />
       ))}
     </ul>
   );

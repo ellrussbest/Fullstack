@@ -14,6 +14,7 @@ import "./Auth.css";
 import ErrorModal from "../../shared/components/UIElements/ErrorModal";
 import LoadingSpinner from "../../shared/components/UIElements/LoadingSpinner";
 import { useHttpClient } from "../../shared/hooks/http-hook";
+import ImageUpload from "../../shared/components/FormElements/ImageUpload";
 
 const Auth = () => {
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
@@ -37,7 +38,7 @@ const Auth = () => {
   const switchModeHandler = () => {
     if (!isLoginMode) {
       setFormData(
-        { ...formState.inputs, name: undefined },
+        { ...formState.inputs, name: undefined, image: undefined },
         formState.inputs.email.isValid && formState.inputs.password.isValid
       );
     } else {
@@ -48,6 +49,10 @@ const Auth = () => {
             value: "",
             isValid: false,
           },
+          image: {
+            value: null,
+            isValid: false,
+          },
         },
         false
       );
@@ -56,6 +61,8 @@ const Auth = () => {
   };
   const authSubmitHandler = async (e) => {
     e.preventDefault();
+
+    console.log(formState.inputs);
     if (isLoginMode) {
       try {
         const responseData = await sendRequest(
@@ -122,6 +129,11 @@ const Auth = () => {
               }}
             />
           )}
+          {!isLoginMode && (
+            <ImageUpload
+              obj={{ id: "image", center: true, onInput: inputHandler }}
+            />
+          )}
           <Input
             obj={{
               id: "email",
@@ -139,9 +151,9 @@ const Auth = () => {
               element: "input",
               type: "password",
               label: "Password",
-              validators: [VALIDATOR_MINLENGTH(5)],
+              validators: [VALIDATOR_MINLENGTH(6)],
               errorText:
-                "Please enter a valid password, at least 5 characters.",
+                "Please enter a valid password, at least 6 characters.",
               onInput: inputHandler,
             }}
           />

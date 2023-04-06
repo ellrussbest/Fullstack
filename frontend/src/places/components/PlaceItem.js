@@ -6,11 +6,27 @@ import Map from "../../shared/components/UIElements/Map";
 
 import "./PlaceItem.css";
 import { AuthContext } from "../../shared/context/auth-context";
+import { useHttpClient } from "../../shared/hooks/http-hook";
+import { url } from "../../shared/util/validators";
+import ErrorModal from "../../shared/components/UIElements/ErrorModal";
+import LoadingSpinner from "../../shared/components/UIElements/LoadingSpinner";
 
 const PlaceItem = ({ obj }) => {
-  const { isLoggedIn } = useContext(AuthContext);
+  const { isLoggedIn, userId } = useContext(AuthContext);
   const [showMap, setShowMap] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const { isLoading, error, sendRequest, clearError } = useHttpClient();
+
+  const {
+    id,
+    image,
+    title,
+    description,
+    address,
+    onDelete,
+    creator,
+    location: coordinates,
+  } = obj || {};
 
   const openMapHandler = () => setShowMap(true);
   const closeMapHandler = () => setShowMap(false);
@@ -23,25 +39,20 @@ const PlaceItem = ({ obj }) => {
     setShowConfirmModal(false);
   };
 
-  const confirmDeleteHandler = () => {
+  const confirmDeleteHandler = async () => {
     setShowConfirmModal(false);
-    console.log("Deleting...");
+    try {
+      await sendRequest(`${url}/places/${id}`, "DELETE");
+      onDelete(id);
+    } catch (error) {}
   };
-  const {
-    id,
-    image,
-    title,
-    description,
-    address,
-    // creator: creatorId,
-    location: coordinates,
-  } = obj || {};
 
   const style = {
     padding: 0,
   };
   return (
     <>
+      <ErrorModal obj={{ error, onClear: clearError }} />
       <Modal
         obj={{
           show: showMap,
@@ -87,6 +98,7 @@ const PlaceItem = ({ obj }) => {
       </Modal>
       <li className="place-item">
         <Card obj={{ style: style }}>
+          {isLoading && <LoadingSpinner obj={{ asOverlay: true }} />}
           <div className="place-item__image">
             <img src={image} alt={title} />
           </div>
@@ -99,8 +111,10 @@ const PlaceItem = ({ obj }) => {
             <Button obj={{ inverse: true, onClick: openMapHandler }}>
               VIEW ON MAP
             </Button>
-            {isLoggedIn && <Button obj={{ to: `/places/${id}` }}>EDIT</Button>}
-            {isLoggedIn && (
+            {isLoggedIn && creator === userId && (
+              <Button obj={{ to: `/places/${id}` }}>EDIT</Button>
+            )}
+            {isLoggedIn && creator === userId && (
               <Button obj={{ danger: true, onClick: showDeleteWarningHandler }}>
                 DELETE
               </Button>

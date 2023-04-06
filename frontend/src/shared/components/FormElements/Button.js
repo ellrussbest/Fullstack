@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import "./Button.css";
 
 const Button = ({ obj, children }) => {
-  const { href, size, inverse, danger, to, type, onClick, disabled } = obj || {};
+  const { href, size, inverse, danger, to, type, onClick, disabled, style } = obj || {};
   if (href) {
     return (
       <a
@@ -36,6 +36,7 @@ const Button = ({ obj, children }) => {
       type={type}
       onClick={onClick}
       disabled={disabled}
+      style={style}
     >
       {children}
     </button>
