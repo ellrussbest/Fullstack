@@ -12,7 +12,7 @@ import ErrorModal from "../../shared/components/UIElements/ErrorModal";
 import LoadingSpinner from "../../shared/components/UIElements/LoadingSpinner";
 
 const PlaceItem = ({ obj }) => {
-  const { isLoggedIn, userId } = useContext(AuthContext);
+  const { isLoggedIn, userId, token } = useContext(AuthContext);
   const [showMap, setShowMap] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
@@ -42,7 +42,9 @@ const PlaceItem = ({ obj }) => {
   const confirmDeleteHandler = async () => {
     setShowConfirmModal(false);
     try {
-      await sendRequest(`${url}/places/${id}`, "DELETE");
+      await sendRequest(`${url}/places/${id}`, "DELETE", null, {
+        Authorization: "Bearer " + token,
+      });
       onDelete(id);
     } catch (error) {}
   };

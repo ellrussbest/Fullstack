@@ -20,7 +20,7 @@ const UpdatePlace = () => {
   const { sendRequest, clearError, error, isLoading } = useHttpClient();
   const [loadedPlaces, setLoadedPlaces] = useState();
   const navigate = useNavigate();
-  const {userId} = useContext(AuthContext)
+  const { userId, token } = useContext(AuthContext);
 
   const [formState, inputHandler, setFormData] = useForm({
     initialInputs: {
@@ -73,6 +73,7 @@ const UpdatePlace = () => {
         }),
         {
           "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
         }
       );
 

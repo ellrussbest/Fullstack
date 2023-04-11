@@ -22,7 +22,6 @@ const ImageUpload = ({ obj }) => {
     fileReader.readAsDataURL(file);
   }, [file]);
 
-
   const pickedHandler = (e) => {
     let pickedFile;
     let fileIsValid = isValid;

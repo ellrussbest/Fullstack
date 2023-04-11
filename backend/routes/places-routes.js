@@ -1,4 +1,5 @@
 const express = require("express");
+const checkAuth = require("../middleware/check-auth");
 
 const { check } = require("express-validator");
 
@@ -15,6 +16,9 @@ const router = express.Router();
 router.get("/:pid", getPlaceById);
 
 router.get("/user/:uid", getPlacesByUserId);
+
+// A request without a valid token will never reach the bottom routes
+router.use(checkAuth);
 
 router.post(
   "/",

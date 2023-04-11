@@ -68,22 +68,22 @@ const Nav = ({ children }) => {
 // ]);
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [token, setToken] = useState(null);
   const [userId, setUserId] = useState("");
 
-  const login = useCallback((userId) => {
-    setIsLoggedIn(true);
+  const login = useCallback((userId, token) => {
+    setToken(token);
     setUserId(userId);
   }, []);
 
   const logout = useCallback(() => {
-    setIsLoggedIn(false);
+    setToken(null);
     setUserId(null);
   }, []);
 
   let router;
 
-  if (isLoggedIn) {
+  if (token) {
     router = createBrowserRouter([
       {
         path: "/",
@@ -160,7 +160,8 @@ function App() {
     <AuthContext.Provider
       value={{
         userId: userId,
-        isLoggedIn: isLoggedIn,
+        token: token,
+        isLoggedIn: !!token,
         login: login,
         logout: logout,
       }}

@@ -1,5 +1,4 @@
 const HttpError = require("../models/http-error");
-const { v4: uuid } = require("uuid");
 const { validationResult } = require("express-validator");
 const getCoordsForAddress = require("../utils/location");
 const Place = require("../models/place");
@@ -151,6 +150,10 @@ const updatePlace = async (req, res, next) => {
     return next(error);
   }
 
+  if (place.creator.toString() !== req.userData.userId) {
+    return next(new HttpError("You are not allowed to edit this place", 401));
+  }
+
   place.title = title;
   place.description = description;
 
@@ -190,6 +193,10 @@ const deletePlace = async (req, res, next) => {
   }
 
   const imagePath = place.image;
+
+  if (place.creator.id !== req.userData.userId) {
+    return next(new HttpError("You are not allowed to delete this place", 401));
+  }
 
   try {
     const sess = await mongoose.startSession();

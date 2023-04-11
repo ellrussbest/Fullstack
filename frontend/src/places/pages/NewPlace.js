@@ -37,7 +37,7 @@ const NewPlace = () => {
     },
     initialFormValidity: false,
   });
-  const { userId } = useContext(AuthContext);
+  const { userId, token } = useContext(AuthContext);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const { isValid, inputs } = formState || {};
   const navigate = useNavigate();
@@ -52,7 +52,9 @@ const NewPlace = () => {
       formData.append("creator", userId);
       formData.append("image", inputs.image.value);
 
-      await sendRequest(`${url}/places`, "POST", formData);
+      await sendRequest(`${url}/places`, "POST", formData, {
+        Authorization: "Bearer " + token,
+      });
       navigate("/");
       // Redirect the user to a different page
     } catch (error) {}
