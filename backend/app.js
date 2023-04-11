@@ -1,3 +1,6 @@
+const fs = require("fs");
+const path = require("path");
+
 require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -11,6 +14,19 @@ const usersRoutes = require("./routes/users-routes");
 const app = express();
 
 app.use(bodyParser.json());
+
+// express static middleware returns the requested file
+// static serving means that you just return a file,
+// you don't execute it... etc.
+app.use(
+  "/uploads/images",
+  express.static(
+    /*include the absolute path here, you can do this with the node js PATH module
+    this helps in giving you the path with regards to file system of your native host environment
+    */
+    path.join("uploads", "images")
+  )
+);
 
 /**
  * A longer way of enabling cors
@@ -42,6 +58,11 @@ app.use((req, res, next) => {
 // express will take this as an error handling middleware function
 // this function will only be executed on requests that have an error attached to it
 app.use((error, req, res, next) => {
+  // multer adds a file property to the request object
+  if (req.file) {
+    fs.unlink(req.file.path, (err) => console.log(err));
+  }
+
   if (res.headerSent) {
     next(error);
     return;

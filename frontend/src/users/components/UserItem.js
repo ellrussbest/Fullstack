@@ -20,7 +20,9 @@ const UserItem = ({ obj }) => {
       <Card obj={{ style: style }}>
         <Link to={`/${id}/places`}>
           <div className="user-item__image">
-            <Avatar obj={{ image: image, alt: name }} />
+            <Avatar
+              obj={{ image: `http://localhost:5000/${image}`, alt: name }}
+            />
           </div>
           <div className="user-item__info">
             <h2>{name}</h2>

@@ -13,6 +13,7 @@ import { useContext } from "react";
 import ErrorModal from "../../shared/components/UIElements/ErrorModal";
 import LoadingSpinner from "../../shared/components/UIElements/LoadingSpinner";
 import { useNavigate } from "react-router-dom";
+import ImageUpload from "../../shared/components/FormElements/ImageUpload";
 
 const NewPlace = () => {
   const [formState, inputHandler] = useForm({
@@ -29,30 +30,29 @@ const NewPlace = () => {
         value: "",
         isValid: false,
       },
+      image: {
+        value: null,
+        isValid: false,
+      },
     },
     initialFormValidity: false,
   });
   const { userId } = useContext(AuthContext);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
-  const { isValid, inputs } = formState;
+  const { isValid, inputs } = formState || {};
   const navigate = useNavigate();
 
   const placeSubmitHandler = async (event) => {
     event.preventDefault();
     try {
-      await sendRequest(
-        `${url}/places`,
-        "POST",
-        JSON.stringify({
-          title: inputs.title.value,
-          description: inputs.description.value,
-          address: inputs.address.value,
-          creator: userId,
-        }),
-        {
-          "Content-Type": "application/json",
-        }
-      );
+      const formData = new FormData();
+      formData.append("title", inputs.title.value);
+      formData.append("description", inputs.description.value);
+      formData.append("address", inputs.address.value);
+      formData.append("creator", userId);
+      formData.append("image", inputs.image.value);
+
+      await sendRequest(`${url}/places`, "POST", formData);
       navigate("/");
       // Redirect the user to a different page
     } catch (error) {}
@@ -100,6 +100,15 @@ const NewPlace = () => {
             validators: [VALIDATOR_REQUIRE()],
             errorText: "Please enter a valid address.",
             onInput: inputHandler,
+          }}
+        />
+
+        <ImageUpload
+          obj={{
+            center: true,
+            id: "image",
+            onInput: inputHandler,
+            errorText: "Please provide an image",
           }}
         />
 
