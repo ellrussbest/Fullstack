@@ -7,7 +7,6 @@ import Map from "../../shared/components/UIElements/Map";
 import "./PlaceItem.css";
 import { AuthContext } from "../../shared/context/auth-context";
 import { useHttpClient } from "../../shared/hooks/http-hook";
-import { url } from "../../shared/util/validators";
 import ErrorModal from "../../shared/components/UIElements/ErrorModal";
 import LoadingSpinner from "../../shared/components/UIElements/LoadingSpinner";
 
@@ -42,9 +41,14 @@ const PlaceItem = ({ obj }) => {
   const confirmDeleteHandler = async () => {
     setShowConfirmModal(false);
     try {
-      await sendRequest(`${url}/places/${id}`, "DELETE", null, {
-        Authorization: "Bearer " + token,
-      });
+      await sendRequest(
+        `${process.env.REACT_APP_BACKEND_URL}/places/${id}`,
+        "DELETE",
+        null,
+        {
+          Authorization: "Bearer " + token,
+        }
+      );
       onDelete(id);
     } catch (error) {}
   };
@@ -52,6 +56,7 @@ const PlaceItem = ({ obj }) => {
   const style = {
     padding: 0,
   };
+
   return (
     <>
       <ErrorModal obj={{ error, onClear: clearError }} />
@@ -102,7 +107,10 @@ const PlaceItem = ({ obj }) => {
         <Card obj={{ style: style }}>
           {isLoading && <LoadingSpinner obj={{ asOverlay: true }} />}
           <div className="place-item__image">
-            <img src={`http://localhost:5000/${image}`} alt={title} />
+            <img
+              src={`${process.env.REACT_APP_ASSET_URL}/${image}`}
+              alt={title}
+            />
           </div>
           <div className="place-item__info">
             <h2>{title}</h2>

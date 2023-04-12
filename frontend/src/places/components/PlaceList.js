@@ -6,6 +6,7 @@ import "./PlaceList.css";
 
 const PlaceList = ({ obj }) => {
   const { items, onDeletePlace } = obj || {};
+
   if (items.length === 0) {
     return (
       <div className="place-list center">

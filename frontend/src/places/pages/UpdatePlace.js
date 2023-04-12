@@ -7,7 +7,6 @@ import { useForm } from "../../shared/hooks/form-hook";
 import {
   VALIDATOR_MINLENGTH,
   VALIDATOR_REQUIRE,
-  url,
 } from "../../shared/util/validators";
 import "./PlaceForm.css";
 import { useHttpClient } from "../../shared/hooks/http-hook";
@@ -39,7 +38,9 @@ const UpdatePlace = () => {
   useEffect(() => {
     const fetchPlace = async () => {
       try {
-        const responseData = await sendRequest(`${url}/places/${placeId}`);
+        const responseData = await sendRequest(
+          `${process.env.REACT_APP_BACKEND_URL}/places/${placeId}`
+        );
         setLoadedPlaces(responseData.place);
         setFormData(
           {
@@ -65,7 +66,7 @@ const UpdatePlace = () => {
 
     try {
       await sendRequest(
-        `${url}/places/${placeId}`,
+        `${process.env.REACT_APP_BACKEND_URL}/places/${placeId}`,
         "PATCH",
         JSON.stringify({
           title: formState.inputs.title.value,

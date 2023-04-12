@@ -3,7 +3,6 @@ import Button from "../../shared/components/FormElements/Button";
 import {
   VALIDATOR_MINLENGTH,
   VALIDATOR_REQUIRE,
-  url,
 } from "../../shared/util/validators";
 import "./PlaceForm.css";
 import { useForm } from "../../shared/hooks/form-hook";
@@ -51,9 +50,14 @@ const NewPlace = () => {
       formData.append("address", inputs.address.value);
       formData.append("image", inputs.image.value);
 
-      await sendRequest(`${url}/places`, "POST", formData, {
-        Authorization: "Bearer " + token,
-      });
+      await sendRequest(
+        `${process.env.REACT_APP_BACKEND_URL}/places`,
+        "POST",
+        formData,
+        {
+          Authorization: "Bearer " + token,
+        }
+      );
       navigate("/");
       // Redirect the user to a different page
     } catch (error) {}

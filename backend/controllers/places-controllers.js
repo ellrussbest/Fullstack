@@ -51,7 +51,7 @@ const getPlacesByUserId = async (req, res, next) => {
   }
 
   // if (!places || places.length === 0) {
-  if (!userWithPlaces || userWithPlaces.places.length === 0) {
+  if (!userWithPlaces /*|| userWithPlaces.places.length === 0*/) {
     const error = new HttpError(
       "Could not find a places for the provided id.",
       404
@@ -179,7 +179,7 @@ const deletePlace = async (req, res, next) => {
   try {
     place = await Place.findById(placeId).populate("creator");
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     const error = new HttpError(
       "Something went wrong here, could not delete place",
       500

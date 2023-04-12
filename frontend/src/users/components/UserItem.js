@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import "./UserItem.css";
 import Card from "../../shared/components/UIElements/Card";
 
+
 const UserItem = ({ obj }) => {
   const { user } = obj || {};
   const { id, name, image, places: placeCount } = user || {};
@@ -21,7 +22,10 @@ const UserItem = ({ obj }) => {
         <Link to={`/${id}/places`}>
           <div className="user-item__image">
             <Avatar
-              obj={{ image: `http://localhost:5000/${image}`, alt: name }}
+              obj={{
+                image: `${process.env.REACT_APP_ASSET_URL}/${image}`,
+                alt: name,
+              }}
             />
           </div>
           <div className="user-item__info">

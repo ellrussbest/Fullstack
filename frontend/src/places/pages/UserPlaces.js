@@ -2,20 +2,21 @@ import { useParams } from "react-router-dom";
 import PlaceList from "../components/PlaceList";
 import { useHttpClient } from "../../shared/hooks/http-hook";
 import { useEffect, useState } from "react";
-import { url } from "../../shared/util/validators";
 import ErrorModal from "../../shared/components/UIElements/ErrorModal";
 import LoadingSpinner from "../../shared/components/UIElements/LoadingSpinner";
 
 const UserPlaces = () => {
   // useParams returns the dynamic values rendered on our url on an object
   const userId = useParams().userId;
-  const { sendRequest, isLoading } = useHttpClient();
+  const { sendRequest, isLoading, error, clearError } = useHttpClient();
   const [loadedPlaces, setLoadedPlaces] = useState();
 
   useEffect(() => {
     const fetchPlaces = async () => {
       try {
-        const responseData = await sendRequest(`${url}/places/user/${userId}`);
+        const responseData = await sendRequest(
+          `${process.env.REACT_APP_BACKEND_URL}/places/user/${userId}`
+        );
         setLoadedPlaces(responseData.places);
       } catch (err) {}
     };
@@ -31,7 +32,7 @@ const UserPlaces = () => {
 
   return (
     <>
-      <ErrorModal />
+      <ErrorModal obj={{ error, onClear: clearError }} />
       {isLoading && (
         <div className="center">
           <LoadingSpinner />
@@ -42,7 +43,6 @@ const UserPlaces = () => {
           obj={{ items: loadedPlaces, onDeletePlace: placeDeletedHandler }}
         />
       )}
-      {!isLoading && loadedPlaces && <></>}
     </>
   );
 };
