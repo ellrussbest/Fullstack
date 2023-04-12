@@ -28,6 +28,9 @@ app.use(
   )
 );
 
+// used to serve the react paths statically
+app.use(express.static(path.join("public")));
+
 /**
  * A longer way of enabling cors
  */
@@ -48,10 +51,16 @@ app.use(cors());
 // middlewares
 app.use("/api/places", placesRoutes);
 app.use("/api/users", usersRoutes);
+
 app.use((req, res, next) => {
-  const error = new HttpError("Could not find this route.", 404);
-  throw error;
+  res.sendFile(path.resolve(__dirname, "public", "index.html"));
 });
+
+// middleware used to handle unknown route requests
+// app.use((req, res, next) => {
+//   const error = new HttpError("Could not find this route.", 404);
+//   throw error;
+// });
 
 // error handler middleware
 // if you provide a middleware function that takes four parameters
