@@ -37,7 +37,7 @@ const NewPlace = () => {
     },
     initialFormValidity: false,
   });
-  const { userId, token } = useContext(AuthContext);
+  const { token } = useContext(AuthContext);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const { isValid, inputs } = formState || {};
   const navigate = useNavigate();
@@ -49,7 +49,6 @@ const NewPlace = () => {
       formData.append("title", inputs.title.value);
       formData.append("description", inputs.description.value);
       formData.append("address", inputs.address.value);
-      formData.append("creator", userId);
       formData.append("image", inputs.image.value);
 
       await sendRequest(`${url}/places`, "POST", formData, {

@@ -8,7 +8,7 @@ import NewPlace from "./places/pages/NewPlace";
 import UpdatePlace from "./places/pages/UpdatePlace";
 import Auth from "./users/pages/Auth";
 import { AuthContext } from "./shared/context/auth-context";
-import { useCallback, useState } from "react";
+import { useAuth } from "./shared/hooks/auth-hook";
 
 const Nav = ({ children }) => {
   return (
@@ -68,18 +68,7 @@ const Nav = ({ children }) => {
 // ]);
 
 function App() {
-  const [token, setToken] = useState(null);
-  const [userId, setUserId] = useState("");
-
-  const login = useCallback((userId, token) => {
-    setToken(token);
-    setUserId(userId);
-  }, []);
-
-  const logout = useCallback(() => {
-    setToken(null);
-    setUserId(null);
-  }, []);
+  const { token, login, logout, userId } = useAuth();
 
   let router;
 

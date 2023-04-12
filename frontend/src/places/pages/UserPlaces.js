@@ -9,7 +9,7 @@ import LoadingSpinner from "../../shared/components/UIElements/LoadingSpinner";
 const UserPlaces = () => {
   // useParams returns the dynamic values rendered on our url on an object
   const userId = useParams().userId;
-  const { sendRequest, error, clearError, isLoading } = useHttpClient();
+  const { sendRequest, isLoading } = useHttpClient();
   const [loadedPlaces, setLoadedPlaces] = useState();
 
   useEffect(() => {
