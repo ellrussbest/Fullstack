@@ -90,3 +90,8 @@ mongoose
     app.listen(process.env.PORT || 5000);
   })
   .catch((error) => console.log(error));
+
+/*
+  This is how a .env file would look like
+  CONNECTION_STRING=mongodb+srv://<username>:<password>@cluster0.srquefs.mongodb.net/<database_name>?retryWrites=true&w=majority
+*/
